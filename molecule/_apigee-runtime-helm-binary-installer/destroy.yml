@@ -1,0 +1,25 @@
+---
+- name: Uninstall helm
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+
+  vars:
+    WORKDIR_DOWNLOAD_DEST: "{{ APIGEE_RUNTIME_WORKDIR_DOWNLOAD_DEST }}"
+
+  tasks:
+  - name: Remove files from filesystem
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "{{ HELM_BINARY }}"
+    - "{{ WORKDIR_DOWNLOAD_DEST }}"
+    poll: 0
+    retries: 50
+    async: 90
+

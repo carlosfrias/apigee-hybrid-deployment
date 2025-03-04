@@ -1,0 +1,31 @@
+---
+- name: Configure Apigee Operator CRDs
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-region-{{ DATA_CENTER | default('dc-1') }}.yml"
+
+  tasks:
+    - name: Uninstall apigee-operator CRDs
+      shell: |
+        kubectl get crd | grep stackable | perl -anle 'print $F[0]' | xargs -I {} kubectl --namespace my-random-namespace delete {} --all
+      args:
+        chdir: "{{ APIGEE_HYBRID_HELM_CHARTS_DIR }}"
+
+#    - name: Uninstall apigee-operator CRDs
+#      shell: |
+#        kubectl delete -k apigee-operator/etc/crds/default/
+#      args:
+#        chdir: "{{ APIGEE_HYBRID_HELM_CHARTS_DIR }}"
+#
+
+
+#    - name: DOES NOT WORK - Apply CRDs
+#      kubernetes.core.k8s:
+#        state: absent
+#        src: "{{ APIGEE_HYBRID_HELM_CHARTS_DIR }}/apigee-operator/etc/crds/default/kustomization.yaml"

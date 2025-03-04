@@ -1,0 +1,15 @@
+---
+- name: Remove Cert Manager
+  import_playbook: "{{ playbook_dir | dirname }}/apigee-runtime-step-8-cert-manager/destroy.yml"
+
+- name: Remove overrides.yml
+  import_playbook: "{{ playbook_dir | dirname }}/apigee-runtime-step-6-overrides/destroy.yml"
+
+- name: Remove downloaded helm charts
+  import_playbook: "{{ playbook_dir | dirname }}/_apigee-runtime-helm-charts-downloader/destroy.yml"
+
+- name: Remove helm for Apigee Runtime
+  import_playbook: "{{ playbook_dir | dirname }}/_apigee-runtime-helm-binary-installer/destroy.yml"
+
+- name: Remove kubectl Cluster credentials
+  import_playbook: "{{ playbook_dir | dirname }}/_apigee-runtime-cluster-config/destroy.yml"

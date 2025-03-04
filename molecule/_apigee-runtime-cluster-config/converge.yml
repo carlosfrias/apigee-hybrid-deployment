@@ -1,0 +1,88 @@
+---
+- name: Apigee Runtime Obtain kubectl config
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  environment:
+    ENABLE_TURBO_MODE: 1
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-region-{{ DATA_CENTER | default('dc-1') }}.yml"
+
+  vars:
+    PROJECT_ID: "{{ APIGEE_RUNTIME_PROJECT_ID }}"
+    WORK_DIR: "{{ APIGEE_RUNTIME_WORK_DIR }}"
+    SERVICE_ACCOUNT_FILE_PATH: "{{ APIGEE_RUNTIME_ADMIN_SERVICE_ACCOUNT_FILE_PATH }}"
+    SERVICE_ACCOUNT_EMAIL: "{{ APIGEE_RUNTIME_ADMIN_SERVICE_ACCOUNT }}"
+    PROJECT_SERVICE_ACCOUNT_FQ_NAME_SUFFIX: "{{ APIGEE_RUNTIME_PROJECT_SERVICE_ACCOUNT_FQ_NAME_SUFFIX }}"
+    CREDENTIALS_DIR: "{{ APIGEE_RUNTIME_CREDENTIALS_DIR }}"
+
+  collections:
+  - bap_coe.apigee_hybrid
+  - bap_coe.gcp_management
+
+  roles:
+  - {
+      role: service_account_file_path,
+      KEY_FILE_PATH: "{{ CREDENTIALS_DIR }}"
+    }
+  - {
+      role: service_account_file_processing
+    }
+  - { role: apigee-hybrid-cluster-credentials }
+
+  tasks:
+  - name: Set regional KUBECONFIG cache
+    set_fact:
+      cacheable: yes
+      CLUSTER_KUBECONFIG: "{{ WORK_DIR }}/credentials/{{ CLUSTER_NAME }}-{{ CLUSTER_REGION }}.kubeconfig-context.json"
+      FQ_CLUSTER_NAME: "gke_{{ PROJECT_ID }}_{{ CLUSTER_REGION }}_{{ CLUSTER_NAME }}"
+    when: REGIONAL_CLUSTER is truthy
+
+  - name: Set zonal KUBECONFIG cache
+    set_fact:
+      cacheable: yes
+      CLUSTER_KUBECONFIG: "{{ WORK_DIR }}/credentials/{{ CLUSTER_NAME }}-{{ CLUSTER_ZONE }}.kubeconfig-context.json"
+      FQ_CLUSTER_NAME: "gke_{{ PROJECT_ID }}_{{ CLUSTER_ZONE }}_{{ CLUSTER_NAME }}"
+    when: REGIONAL_CLUSTER is not truthy
+
+  - block:
+    - name: Rename cluster
+      shell: |
+        kubectx {{ CLUSTER_NAME }}={{ FQ_CLUSTER_NAME }}
+        kubectx {{ CLUSTER_NAME }}
+    rescue:
+    - name: RESCUE - Wait for the cluster...
+      pause:
+        seconds: 15
+
+    - name: RESCUE - Rename cluster
+      shell: |
+        kubectx {{ CLUSTER_NAME }}={{ FQ_CLUSTER_NAME }}
+        kubectx {{ CLUSTER_NAME }}
+
+  - name: Generate kubeconfig file content
+    shell: kubectl config view --minify --flatten --context={{ CLUSTER_NAME }}
+    register: kubeconfig_content
+
+  - name: Create kubeconfig file
+    copy:
+      content: "{{ kubeconfig_content.stdout }}"
+      dest: "{{ CLUSTER_KUBECONFIG }}"
+
+  - name: Create StorageClass config
+    shell: |
+      kubectl apply -f storageclass.yml
+
+  - name: Patch storageclass standard-rwo
+    shell: |
+      kubectl patch storageclass standard-rwo \
+      -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+
+  - name: Patch storageclass apigee-sc
+    shell: |
+      kubectl patch storageclass apigee-sc \
+      -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'

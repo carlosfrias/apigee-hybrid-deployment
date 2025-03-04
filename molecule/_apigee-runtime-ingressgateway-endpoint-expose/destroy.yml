@@ -1,0 +1,26 @@
+---
+- name: Configure kubectl Cluster credentials
+  import_playbook: "{{ playbook_dir | dirname }}/_apigee-runtime-cluster-config/converge.yml"
+
+- name: Uninstall Apigee hybrid Ingressgateway Endpoint
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-region-{{ DATA_CENTER | default('dc-1') }}.yml"
+
+  collections:
+    - bap_coe.apigee_hybrid
+    - bap_coe.gcp_management
+
+  roles:
+    - {
+        role: apigee-hybrid-ingressgateway-expose-endpoint,
+        SERVICE_MANIFEST_FILE_DEST: "{{ APIGEE_RUNTIME_OVERRIDE_FILE }}",
+        UNINSTALL: true
+    }
+
