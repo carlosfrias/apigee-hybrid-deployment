@@ -1,0 +1,4 @@
+#!/usr/local/google/home/friasc/.pyenv/versions/3.11.2/envs/bap_coe/bin/python
+import pydoc
+if __name__ == '__main__':
+      pydoc.cli()
