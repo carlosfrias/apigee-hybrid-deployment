@@ -2,3 +2,4 @@
 Dockerfile
 docker-build.yml
 utils/
+.pyenv/versions/3.11.2
