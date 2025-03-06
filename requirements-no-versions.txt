@@ -19,7 +19,6 @@ pep8
 pylint
 compile
 changelog
-empty-init
 ignores
 import
 line-endings
