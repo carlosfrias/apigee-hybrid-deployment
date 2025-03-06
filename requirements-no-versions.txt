@@ -20,7 +20,6 @@ pylint
 compile
 changelog
 ignores
-import
 line-endings
 no-assert
 no-basestring
