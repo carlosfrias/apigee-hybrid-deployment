@@ -2,3 +2,6 @@
 Dockerfile
 docker-build.yml
 utils/
+context/
+test_*
+*.log
