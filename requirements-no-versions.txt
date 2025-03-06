@@ -17,7 +17,6 @@ jsonpatch
 kubernetes
 pep8
 pylint
-use-compat-six
 validate-modules
 compile
 action-plugin-docs
