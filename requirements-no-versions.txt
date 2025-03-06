@@ -17,7 +17,6 @@ jsonpatch
 kubernetes
 pep8
 pylint
-validate-modules
 compile
 action-plugin-docs
 ansible-doc
