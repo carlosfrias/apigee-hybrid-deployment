@@ -1,4 +1,4 @@
-
+wheel
 pyasn1_modules
 jmespath
 ansible==2.10
@@ -20,15 +20,4 @@ pylint
 compile
 changelog
 ignores
-# no-assert
-# no-basestring
-# no-dict-iteritems
-# no-dict-iterkeys
-# no-dict-intervalues
-# no-get-exception
-# no-illegal-filenames
-# no-main-display
-# no-smart-quotes
-# no-unicode-literals
-
 
