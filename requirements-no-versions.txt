@@ -18,7 +18,6 @@ kubernetes
 pep8
 pylint
 compile
-action-plugin-docs
 ansible-doc
 changelog
 empty-init
