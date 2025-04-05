@@ -1,0 +1,80 @@
+---
+version: 3
+images:
+  base_image:
+    name: docker.io/python:3.11.4
+dependencies:
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
+  python_interpreter:
+    package_system: "pip"
+    python_path: "/usr/bin/python3"
+  python:
+    - wheel
+    - pyasn1_modules
+    - jmespath
+    - ansible==2.10
+    - ansible-lint
+    - molecule==3.2.3
+    - yamllint
+    - passlib
+    - apache-libcloud
+    - google-auth
+    - requests
+    - pycryptodome
+    - NumPy
+    - netaddr
+    - PyYAMl
+    - jsonpatch
+    - kubernetes
+    - pep8
+    - pylint
+    - compile
+    - changelog
+    - ignores
+  system:
+    - openssh-clients [platform:ubuntu]
+    - sshpass  [platform:ubuntu]
+  galaxy:
+    collections:
+    - name: google.cloud
+    - name: community.google
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/gcp_management,master
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/performance_testing,master
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/apigee_hybrid,master
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/bastion_host,master
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/bootstrap_runtime,master
+    - name: git+https://github.com/carlosfrias/apigee-hybrid-workspace.git#bap_coe/private_cloud,master
+additional_build_files:
+  - src: molecule
+    dest: installer/molecule/
+  - src: resources
+    dest: installer/resources/
+  - src: utils
+    dest: installer/utils/
+
+additional_build_steps:
+  append_base:
+    - RUN apt update -y
+    - RUN apt install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3.11 python3.11-venv python3-pip libssl-dev libffi-dev -y
+    - RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor | tee /usr/share/keyrings/cloud.google.gpg > /dev/null
+    - RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    - RUN apt update -y
+    - RUN apt install google-cloud-cli -y
+    - RUN pip install --upgrade pip
+  prepend_final:
+    - RUN pip install -r /installer/resources/requirements.txt
+    - RUN mkdir -p work_dir
+    - RUN chmod -R +w work_dir
+    - RUN mkdir -p ~/.apigee-secure
+    - RUN cp resources/credentials.yml.template ~/.apigee-secure/credentials.yml
+
+options:
+  container_init:
+    entrypoint: '["bash"]'
+  package_manager_path: /usr/bin/apt
+#  skip_pip_install: true
+#  tags:
+#    - ansible-helm:latest

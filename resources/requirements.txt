@@ -1,0 +1,16 @@
+passlib
+apache-libcloud
+google-auth
+requests
+ansible==2.10
+#molecule==3.2.3
+molecule
+pyasn1_modules
+jmespath
+ansible-lint
+yamllint
+pycryptodome
+NumPy
+netaddr
+jsonpatch
+kubernetes
