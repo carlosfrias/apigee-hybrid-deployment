@@ -8,6 +8,8 @@ APIGEE_OVERRIDE_TEMPLATE: "prod"  # Values can be: 'non-prod' or 'prod'
 APIGEE_CONTROL_WORK_DIR: "{{ playbook_dir | dirname | dirname }}/work_dir/{{ APIGEE_CONTROL_PROJECT_ID }}"
 APIGEE_RUNTIME_WORK_DIR: "{{ playbook_dir | dirname | dirname }}/work_dir/{{ APIGEE_RUNTIME_PROJECT_ID }}"
 
+TOOLS_DIR: "/usr/local/bin"
+
 APIGEE_CONTROL_WORKDIR_DOWNLOAD_DEST: "{{ APIGEE_CONTROL_WORK_DIR }}/downloads"
 APIGEE_RUNTIME_WORKDIR_DOWNLOAD_DEST: "{{ APIGEE_RUNTIME_WORK_DIR }}/downloads"
 
@@ -83,7 +85,7 @@ HELM_VERSION_LIST:
   - "3.11.1"
 HELM_VERSION: "{{HELM_VERSION_LIST[0]}}"
 HELM_BASE_URL: https://get.helm.sh
-HELM_INSTALLATION_ARCHIVE_NAME: helm-v{{ HELM_VERSION }}-{{ ansible_system | lower }}-{{ facter_os.architecture }}.tar.gz
+HELM_INSTALLATION_ARCHIVE_NAME: helm-v{{ HELM_VERSION }}-{{ ansible_system | lower }}-{{ facter_os.architecture | default('amd64') }}.tar.gz
 HELM_URL: "{{ HELM_BASE_URL }}/{{ HELM_INSTALLATION_ARCHIVE_NAME }}"
 HELM_URL_CHECKSUM: "{{ HELM_URL }}.sha256sum"
 HELM_BINARY: "{{ APIGEE_RUNTIME_WORKDIR_BINARY_DEST }}/helm"

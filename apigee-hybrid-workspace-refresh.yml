@@ -1,0 +1,49 @@
+---
+- name: Create and configure the docker repository
+  hosts: localhost
+  connection: local
+
+  vars:
+    PROJECT_ID: "friasc-apigee-lab"
+    repoName: "apigee-workspace"
+    repoFormat: "docker"
+    repoLocation: "us-east1"
+    repoDockerProto: "{{repoLocation}}-docker.pkg.dev"
+    dockerBuildName: "apigee-workspace-v1"
+    WORK_DIR: "work_dir"
+    APIGEE_WORKBENCH_NAME: "apigee-hybrid-workspace"
+    APIGEE_HYBRID_INSTALLER_GITHUB: "https://github.com/carlosfrias/{{ APIGEE_WORKBENCH_NAME }}.git"
+    APIGEE_HYBRID_INSTALLER_SOURCE_FOLDER: "bap_coe/apigee_helm/playbooks/molecule"
+    APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE: "{{ WORK_DIR }}/source-repos/{{ APIGEE_WORKBENCH_NAME }}/{{ APIGEE_HYBRID_INSTALLER_SOURCE_FOLDER }}"
+    APIGEE_HYBRID_INSTALLER_MOLECULE_DEST: "{{ playbook_dir }}"
+    APIGEE_HYBRID_ON_AWS_NAME: "apigee-hybrid-on-aws"
+    APIGEE_HYBRID_ON_AWS_GITHUB: "https://github.com/AyoSal/{{ APIGEE_HYBRID_ON_AWS_NAME }}"
+    APIGEE_HYBRID_ON_AWS_SOURCE_FOLDER: "{{ APIGEE_HYBRID_ON_AWS_NAME }}"
+    GITHUB_REPOS:
+    - { repo: "{{ APIGEE_HYBRID_INSTALLER_GITHUB }}", dest: "work_dir/source-repos/{{ APIGEE_WORKBENCH_NAME }}" }
+    - { repo: "{{ APIGEE_HYBRID_ON_AWS_GITHUB }}", dest: "work_dir/source-repos/{{ APIGEE_HYBRID_ON_AWS_NAME }}" }
+    - { repo: "https://github.com/ganadurai/single-node-apigee-hybrid-install.git", dest: "work_dir/source-repos/single-node-apigee-hybrid-install"}
+
+  collections:
+  - commmunity.docker
+
+  tasks:
+    - name: Assert working folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+      - "work_dir/source-repos"
+      - "molecule"
+
+    - name: Download apigee-hybrid-deployment scripts
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+      with_items: "{{GITHUB_REPOS}}"
+
+    - name: Synchronize from local molecule folder to build folder
+      ansible.posix.synchronize:
+        src: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE }}"
+        dest: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_DEST }}"
+
