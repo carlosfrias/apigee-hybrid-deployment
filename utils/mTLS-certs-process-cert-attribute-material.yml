@@ -1,0 +1,52 @@
+---
+- name: Extract content string into array
+  set_fact:
+    cert_data_list: "{{ item | split }}"
+
+- name: Assert missing variables
+  assert:
+    that:
+    - data_folder is defined
+    - file_suffix is defined
+    - attribute_name is defined
+    msg: "Please make sure the missing variable is provided. "
+
+- name: Assert data folder
+  file:
+    path: "{{ data_folder }}"
+    state: directory
+
+- name: Construct Entity Names
+  set_fact:
+    cacheable: true
+    secret_name: "{{ cert_data_list[0] }}"
+    output_cert_file_name: "{{ data_folder }}/{{ cert_data_list[0] }}.{{ file_suffix }}"
+
+- name: Download Cert Material
+  shell: |
+    kubectl get secret -n {{ NAMESPACE }} {{ secret_name }} -o json | jq -r '.data["{{ attribute_name }}"]' | base64 -d
+  register: secret_material_output
+
+- name: Capture Certificate Material
+  set_fact:
+    cacheable: true
+    cert_ca: "{{ secret_material_output.stdout }}"
+
+- name: Save Certificate Material to file
+  copy:
+    content: "{{ cert_ca }}"
+    dest: "{{ output_cert_file_name }}"
+
+- block:
+  - name: Certificate status
+    shell: |
+      openssl x509 -in {{ output_cert_file_name }} -text -noout
+    register: cert_text
+
+  - name: Save Certificate status
+    copy:
+      content: "{{ cert_text.stdout }}"
+      dest: "{{ data_folder }}/{{ cert_data_list[0] }}.{{ file_suffix }}.txt"
+
+
+  when: file_suffix == 'tls.crt'

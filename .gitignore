@@ -1,8 +1,6 @@
-.env.yml
-Dockerfile
-apigee-hybrid-workspace-build.yml
-utils/
+archive/
 context/
 test_*
 *.log
-work_dir
+work_dir/
+
