@@ -1,4 +1,4 @@
-# Apigee Workspace
+# Apigee hybrid Deployment Workspace
 
 This intent of this project is to create a workspace 
 from which to deploy an Apigee hybrid instance. This workspace
