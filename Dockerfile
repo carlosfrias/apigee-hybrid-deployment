@@ -1,6 +1,6 @@
 # Usage instructions
 # Building this Dockerfile
-# docker built -t bootstrap . && docker run -ti bootstrap:latest bash
+# docker built -t apigee-workspace-v1 . && docker run -ti apigee-workspace-v1 bash
 
 FROM python:3.11.2 AS basic_bootstrap
 RUN apt-get update -y \
@@ -35,7 +35,6 @@ RUN bash /apigee-workspace/apigee-helm/bootstrap/configure-pyenv.sh
 COPY molecule /apigee-workspace/apigee-helm/molecule/
 COPY resources /apigee-workspace/apigee-helm/resources/
 COPY utils /apigee-workspace/apigee-helm/utils/
-#COPY work_dir/bap_coe-site-packages-molecule /apigee-workspace/apigee-helm/resources/versions/3.11.2/envs/bap_coe/lib/python3.11/site-packages/
 
 FROM pyenv
 RUN bash -x /apigee-workspace/apigee-helm/utils/activate-workspace.sh \
