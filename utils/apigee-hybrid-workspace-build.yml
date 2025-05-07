@@ -2,17 +2,18 @@
 - name: Refresh workspace
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-refresh.yml"
 
-- name: Create and configure the docker repository
+- name: Build and push to artifact repository
   hosts: localhost
   connection: local
 
   vars:
     PROJECT_ID: "friasc-apigee-lab"
     repoName: "apigee-workspace"
+    tag: "v1.0"
     repoFormat: "docker"
     repoLocation: "us-east1"
     repoDockerProto: "{{repoLocation}}-docker.pkg.dev"
-    dockerBuildName: "apigee-workspace-v1"
+    dockerBuildName: "apigee-workspace"
     WORK_DIR: "work_dir"
     APIGEE_WORKBENCH_NAME: "apigee-hybrid-workspace"
     APIGEE_HYBRID_INSTALLER_GITHUB: "https://github.com/carlosfrias/{{ APIGEE_WORKBENCH_NAME }}.git"
@@ -31,19 +32,29 @@
   - commmunity.docker
 
   tasks:
-    - name: Docker Cloudshell Build with Ansible
+    - name: Set image name
+      set_fact:
+        image_name: "{{ repoLocation }}.pkg.dev/{{ PROJECT_ID }}/{{ repoName }}/{{ dockerBuildName }}"
+
+    - name: Build image
       docker_image:
         name: "{{dockerBuildName}}"
         source: "build"
         build:
           path: "{{ playbook_dir | dirname }}"
           rm: true
-          dockerfile: Dockerfile
+          dockerfile: "Dockerfile"
 
+    - name: Tag image
+      community.docker.docker_image_tag:
+        name: "{{dockerBuildName}}"
+        repository:
+        - "{{ image_name}}:{{ tag }}"
+          
     - name: Create container
       docker_container:
-        name: "{{dockerBuildName}}"
-        image: "{{dockerBuildName}}"
+        name: "{{image_name}}"
+        image: "{{image_name}}"
         state: "started"
         auto_remove: yes
         detach: yes
@@ -54,45 +65,32 @@
         - "{{ playbook_dir }}/molecule:/apigee-workspace/apigee-helm/molecule:rw"
         - "{{ playbook_dir }}/work_dir:/apigee-workspace/apigee-helm/work_dir:rw"
 #        recreate: true
-#        env:
-#          APIGEE_USER_NAME: "{{ ansible_user_id }}"
-#        mounts:
-#        - { type: "volume", source: "/usr/local/google/home/friasc/.apigee-secure/", target: "/root/apigee-secure", read_only: true }
-#        - { type: "volume", source: "{{ ansible_user_dir }}/.config", target: "/root/.config", read_only: true }
-#        - { type: "volume", source: "{{ playbook_dir }}/resources", target: "/apigee-workspace/apigee-helm/resources", read_only: true }
-#        - { type: "volume", source: "{{ playbook_dir }}/molecule", target: "/apigee-workspace/apigee-helm/molecule", read_only: false }
-#        - { type: "volume", source: "{{ playbook_dir }}/work_dir", target: "/apigee-workspace/apigee-helm/work_dir", read_only: false }
 
-#    - name: Run container
-#      shell: CONTAINER_NAME={{ dockerBuildName }} bash ./start-container.sh
-#
-#  - block:
-#    - name: Create repository
-#      shell: |
-#        gcloud artifacts repositories create {{repoName}} \
-#            --repository-format={{repoFormat}} \
-#            --location={{repoLocation}} \
-#            --description="Docker repository" \
-#            --project={{PROJECT_ID}}
-#    rescue:
+    - name: Configure Docker Authentication
+      shell: |
+        gcloud auth configure-docker {{repoLocation}}-docker.pkg.dev --project {{PROJECT_ID}}
+
+    - name: Create repository
+      ignore_errors: true
+      shell: |
+        gcloud artifacts repositories create {{repoName}} \
+            --repository-format={{repoFormat}} \
+            --location={{repoLocation}} \
+            --description="Docker repository" \
+            --project={{PROJECT_ID}}
+
 #    - name: List repositories
 #      shell: |
 #        gcloud artifacts repositories list --project {{ PROJECT_ID }}
-#      register: output
 #      failed_when: repoName not in output.stdout
-#
-#  - name: Configure Docker Authentication
-#    shell: |
-#      gcloud auth configure-docker {{repoLocation}}-docker.pkg.dev --project {{PROJECT_ID}}
-#
-#  - name: Docker Cloudshell Build with Ansible
-#    docker_image:
-#      name: "{{repoLocation}}-{{repoDockerProto}}/{{PROJECT_ID}}/{{repoName}}/{{dockerBuildName}}:tag1"
-#      build:
-#        path: "{{ playbook_dir }}"
-#        rm: true
-#      source: build
-##      push: true
 
-
+    - name: Push container to repo
+      shell: |
+       docker push {{ image_name }}:{{ tag }}
+        
+    - name: Generate start-container.sh script
+      template:
+        src: "{{ playbook_dir }}/start-container.sh.template"
+        dest: ../start-container.sh
+        mode: 0777
 
