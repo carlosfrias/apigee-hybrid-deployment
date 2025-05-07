@@ -6,4 +6,4 @@ docker run -v $HOME/.apigee-secure:/root/.apigee-secure:ro \
    -v $(pwd)/work_dir:/apigee-workspace/apigee-helm/work_dir:rw \
    -v $HOME/.config:/root/.config/gcloud:rw \
    -ti \
-   apigee-workspace:v1.0 bash
+   us-east1-docker.pkg.dev/friasc-apigee-lab/apigee-workspace/apigee-workspace:v1.0 bash

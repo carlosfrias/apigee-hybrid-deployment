@@ -34,7 +34,7 @@
   tasks:
     - name: Set image name
       set_fact:
-        image_name: "{{ repoLocation }}.pkg.dev/{{ PROJECT_ID }}/{{ repoName }}/{{ dockerBuildName }}"
+        image_name: "{{ repoLocation }}-docker.pkg.dev/{{ PROJECT_ID }}/{{ repoName }}/{{ dockerBuildName }}"
 
     - name: Build image
       docker_image:
@@ -45,16 +45,10 @@
           rm: true
           dockerfile: "Dockerfile"
 
-    - name: Tag image
-      community.docker.docker_image_tag:
-        name: "{{dockerBuildName}}"
-        repository:
-        - "{{ image_name}}:{{ tag }}"
-          
     - name: Create container
       docker_container:
-        name: "{{image_name}}"
-        image: "{{image_name}}"
+        name: "{{dockerBuildName}}"
+        image: "{{dockerBuildName}}"
         state: "started"
         auto_remove: yes
         detach: yes
@@ -65,6 +59,12 @@
         - "{{ playbook_dir }}/molecule:/apigee-workspace/apigee-helm/molecule:rw"
         - "{{ playbook_dir }}/work_dir:/apigee-workspace/apigee-helm/work_dir:rw"
 #        recreate: true
+
+    - name: Tag image
+      community.docker.docker_image_tag:
+        name: "{{dockerBuildName}}"
+        repository:
+        - "{{ image_name}}:{{ tag }}"
 
     - name: Configure Docker Authentication
       shell: |
