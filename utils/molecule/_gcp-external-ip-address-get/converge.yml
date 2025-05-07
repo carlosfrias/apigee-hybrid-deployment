@@ -1,0 +1,26 @@
+- name: Obtain External IP Address
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-region-{{ DATA_CENTER | default('dc-1') }}.yml"
+
+  vars:
+    WORK_DIR: "{{ APIGEE_RUNTIME_WORK_DIR }}"
+    SERVICE_ACCOUNT_FILE_PATH: "{{ APIGEE_RUNTIME_SERVICE_ACCOUNT_FILE_PATH }}"
+    SERVICE_ACCOUNT_EMAIL: "{{ APIGEE_RUNTIME_ADMIN_SERVICE_ACCOUNT }}"
+    GCP_TOKEN_FILE_PATH: "{{ APIGEE_RUNTIME_GCP_TOKEN_FILE_PATH }}"
+    CREDENTIALS_DIR: "{{ APIGEE_RUNTIME_CREDENTIALS_DIR }}"
+
+
+  collections:
+    - bap_coe.apigee_hybrid
+    - bap_coe.gcp_management
+
+  roles:
+  - { role: gcp_token_retrieval, PROJECT_ID: "{{ APIGEE_RUNTIME_PROJECT_ID }}"  }
+  - { role: gce_external_ip_get, PROJECT_ID: "{{ APIGEE_RUNTIME_PROJECT_ID }}" }
+

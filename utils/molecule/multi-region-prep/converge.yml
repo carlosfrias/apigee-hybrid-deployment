@@ -1,0 +1,21 @@
+---
+- name: Update override with hostNetwork true
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+  - name: Set data center fact
+    set_fact:
+      cacheable: true
+      DATA_CENTER: "dc-2-prep"
+      CASSANDRA_HOST_NETWORK: true
+
+- name: Update overrides config file
+  import_playbook: "{{ playbook_dir | dirname }}/apigee-runtime-step-6-overrides-DEPRECATED/converge.yml"
+
+- name: Update overrides paths and move into helm chart folders
+  import_playbook: "{{ playbook_dir | dirname }}/apigee-runtime-step-6-overrides/converge.yml"
+
+- name: Distribute configs and credentials to helm chart folders
+  import_playbook: "{{ playbook_dir | dirname }}/_apigee-runtime-helm-chart-credentials-distribution/converge.yml"

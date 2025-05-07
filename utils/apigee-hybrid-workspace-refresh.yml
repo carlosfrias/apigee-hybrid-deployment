@@ -20,8 +20,8 @@
     APIGEE_HYBRID_ON_AWS_GITHUB: "https://github.com/AyoSal/{{ APIGEE_HYBRID_ON_AWS_NAME }}"
     APIGEE_HYBRID_ON_AWS_SOURCE_FOLDER: "{{ APIGEE_HYBRID_ON_AWS_NAME }}"
     GITHUB_REPOS:
-    - { repo: "{{ APIGEE_HYBRID_INSTALLER_GITHUB }}", dest: "work_dir/source-repos/{{ APIGEE_WORKBENCH_NAME }}" }
-    - { repo: "{{ APIGEE_HYBRID_ON_AWS_GITHUB }}", dest: "work_dir/source-repos/{{ APIGEE_HYBRID_ON_AWS_NAME }}" }
+    - { repo: "{{ APIGEE_HYBRID_INSTALLER_GITHUB }}", dest: "../work_dir/source-repos/{{ APIGEE_WORKBENCH_NAME }}" }
+    - { repo: "{{ APIGEE_HYBRID_ON_AWS_GITHUB }}", dest: "../work_dir/source-repos/{{ APIGEE_HYBRID_ON_AWS_NAME }}" }
     - { repo: "https://github.com/ganadurai/single-node-apigee-hybrid-install.git", dest: "work_dir/source-repos/single-node-apigee-hybrid-install"}
 
   collections:
