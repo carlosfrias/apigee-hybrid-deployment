@@ -1,0 +1,37 @@
+---
+- name: Build container
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  collections:
+      - commmunity.docker
+
+  tasks:
+    - name: Build image
+      docker_image:
+        name: "{{ dockerBuildName }}"
+        source: "build"
+        build:
+          path: "{{ SOURCE_DIR }}"
+          rm: true
+          dockerfile: "Dockerfile"
+
+    - name: Create container
+      docker_container:
+        name: "{{ dockerBuildName }}"
+        image: "{{ dockerBuildName }}"
+        state: "started"
+        auto_remove: yes
+        detach: yes
+        volumes: "{{ container_volumes }}"
+        recreate: true
+
+    - name: Tag image
+      community.docker.docker_image_tag:
+        name: "{{ dockerBuildName }}"
+        repository:
+        - "{{ image_name }}:{{ tag }}"
+

@@ -1,0 +1,40 @@
+---
+- name: Create and configure the docker repository
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  tasks:
+    - name: Clean prior output files
+      become: yes
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "[{{ OUTPUT_FOLDERS }}, {{ OUTPUT_FILES }}]"
+
+    - name: Assert working folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items: "{{ OUTPUT_FOLDERS }}"
+
+    - name: Download apigee-hybrid-deployment scripts
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+      with_items: "{{ GITHUB_REPOS }}"
+
+#    - name: Expand permission for downloaded github repos
+#      file:
+#        path: "{{ item }}"
+#        mode: 0666
+
+    - name: Synchronize from local molecule folder to build folder
+      ansible.posix.synchronize:
+        src: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE }}"
+        dest: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_DEST }}"
+        perms: false
+        times: true
+

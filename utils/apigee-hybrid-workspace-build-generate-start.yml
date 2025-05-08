@@ -1,0 +1,16 @@
+---
+- name: Generate start-container.sh script
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  tasks:
+    - name: Generate start-container.sh script
+      template:
+        src: "{{ SOURCE_DIR }}/utils/start-container.sh.template"
+        dest: "{{ SOURCE_DIR }}/start-container.sh"
+        mode: 0777
+        backup: yes
+

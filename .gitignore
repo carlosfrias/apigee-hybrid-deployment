@@ -3,4 +3,5 @@ context/
 test_*
 *.log
 work_dir/
+molecule/
 
