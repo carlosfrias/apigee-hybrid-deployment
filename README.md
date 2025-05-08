@@ -1,6 +1,6 @@
 # Apigee hybrid Deployment Workspace
 
-This intent of this project is to create a workspace 
+This intent of this project is to create a portable workspace 
 from which to deploy an Apigee hybrid instance. This workspace
 can be used to quickly deploy a working hybrid instance or to roll
 back portions of the build so that configuration changes can be 
@@ -9,4 +9,4 @@ This project also saves on Argolis billing costs because instead of
 maintaining a running instance(s) of hybrid you can maintain configurations
 that can be deployed repeatedly to a known state. 
 
-## Quick Start
+
