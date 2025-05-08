@@ -4,7 +4,7 @@
 
 FROM python:3.11.2 AS basic_bootstrap
 RUN apt-get update -y \
-    && apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev -y
+    && apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev rsync -y
 
 RUN curl -O --output-dir /tmp https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz \
     && tar -xf /tmp/google-cloud-cli-linux-x86_64.tar.gz \
