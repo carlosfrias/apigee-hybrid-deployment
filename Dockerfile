@@ -29,7 +29,7 @@ RUN curl -fsSL https://pyenv.run | bash \
 
 RUN mkdir -p /apigee-workspace/apigee-helm/bootstrap
 WORKDIR /apigee-workspace/apigee-helm
-COPY utils/configure-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/
+COPY utils/container/configure-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/
 RUN bash /apigee-workspace/apigee-helm/bootstrap/configure-pyenv.sh
 
 COPY molecule /apigee-workspace/apigee-helm/molecule/
@@ -37,7 +37,7 @@ COPY resources /apigee-workspace/apigee-helm/resources/
 COPY utils /apigee-workspace/apigee-helm/utils/
 
 FROM pyenv
-RUN bash -x /apigee-workspace/apigee-helm/utils/activate-workspace.sh \
+RUN bash -x /apigee-workspace/apigee-helm/utils/container/activate-virtualenv-workspace.sh \
     && mkdir -p work_dir \
     && chmod -R +w work_dir \
     && mkdir -p ~/.apigee-secure \

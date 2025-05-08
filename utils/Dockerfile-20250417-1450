@@ -24,7 +24,7 @@ RUN apt-get update -y \
 FROM basic_bootstrap
 RUN mkdir -p /apigee-workspace/apigee-helm/bootstrap \
     && useradd -ms /bin/bash friasc
-COPY configure-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/
+COPY container/configure-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/
 COPY ../molecule /apigee-workspace/apigee-helm/molecule/
 COPY resources /apigee-workspace/apigee-helm/resources/
 COPY ../utils /apigee-workspace/apigee-helm/utils/

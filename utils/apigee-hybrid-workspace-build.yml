@@ -6,7 +6,7 @@
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-container.yml"
 
 - name: Push artifact to repository
-  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-artifact-push.yml"
+  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-artifact.yml"
 
 - name: Generate start-container.sh script
   import_playbook:  "{{ playbook_dir }}/apigee-hybrid-workspace-build-generate-start.yml"

@@ -1,0 +1,16 @@
+---
+- name: Create and configure the docker repository
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  tasks:
+    - name: Clean prior output files
+      become: yes
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "[{{ OUTPUT_FOLDERS }}, {{ OUTPUT_FILES }}]"
+
