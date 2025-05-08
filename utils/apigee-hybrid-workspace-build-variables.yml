@@ -35,6 +35,6 @@ container_volumes:
 OUTPUT_FOLDERS:
 - "{{ WORK_DIR }}"
 - "{{ SOURCE_DIR }}/molecule"
--
+
 OUTPUT_FILES:
 - "{{ SOURCE_DIR }}/start-container.sh"
