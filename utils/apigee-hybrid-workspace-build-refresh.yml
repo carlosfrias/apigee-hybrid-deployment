@@ -17,17 +17,18 @@
       git:
         repo: "{{ item.repo }}"
         dest: "{{ item.dest }}"
-      with_items: "{{ GITHUB_REPOS }}"
 
-#    - name: Expand permission for downloaded github repos
-#      file:
-#        path: "{{ item }}"
-#        mode: 0666
+      with_items: "{{ GITHUB_REPOS }}"
 
     - name: Synchronize from local molecule folder to build folder
       ansible.posix.synchronize:
         src: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE }}"
         dest: "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_DEST }}"
         perms: false
+
         times: true
 
+    - name: Update folder ownership
+      file:
+        path: "{{ item }}"
+      with_items: ["{{ OUTPUT_FOLDERS }}", "{{ APIGEE_HYBRID_INSTALLER_MOLECULE_DEST }}"]
