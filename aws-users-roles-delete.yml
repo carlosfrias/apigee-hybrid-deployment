@@ -1,0 +1,28 @@
+---
+- name: Remove AWS User
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - aws-installer.yml
+
+  vars:
+    aws_users:
+      - "testuser1"
+
+  collections:
+  - amazon.aws
+
+  tasks:
+  - name: Remove user
+    ignore_errors: true
+    amazon.aws.iam_user:
+      access_key: "{{ AWS_ACCESS_KEY }}"
+      secret_key: "{{ AWS_ACCESS_KEY_SECRET }}"
+      name: "{{ item }}"
+      state: absent
+    with_items: "{{ aws_users }}"
+
+
+

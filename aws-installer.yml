@@ -1,0 +1,7 @@
+---
+- name: Create or update users and permissions
+  import_playbook: aws-users-roles-create.yml
+
+- name: Create AWS Cluster with Terraform
+  import_playbook: aws-cluster-terraform.yml
+

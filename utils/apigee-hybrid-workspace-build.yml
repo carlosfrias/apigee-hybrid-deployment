@@ -1,4 +1,7 @@
 ---
+- name: Clean workspace
+  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-clean.yml"
+
 - name: Refresh workspace
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-refresh.yml"
 

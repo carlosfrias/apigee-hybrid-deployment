@@ -1,0 +1,24 @@
+---
+- name: Create AWS Users and Roles
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - aws-vars.yml
+
+  collections:
+  - amazon.aws
+
+  tasks:
+  - name: Create a user and attach a managed policy using its ARN
+    amazon.aws.iam_user:
+      access_key: "{{ AWS_ACCESS_KEY }}"
+      secret_key: "{{ AWS_ACCESS_KEY_SECRET }}"
+      name: "{{ item }}"
+      managed_policies: "{{ managed_policies_list }}"
+      state: present
+    with_items: "{{ aws_users }}"
+
+
+
