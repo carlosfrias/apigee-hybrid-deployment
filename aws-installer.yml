@@ -5,3 +5,6 @@
 - name: Create AWS Cluster with Terraform
   import_playbook: aws-cluster-terraform.yml
 
+- name: Download AWS Cluster credentials
+  import_playbook: aws-cluster-credentials.yml
+

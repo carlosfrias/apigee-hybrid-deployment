@@ -14,9 +14,9 @@ CLUSTER_NAME: "hybrid-eks-Xiir3jHa"
 AWSCLI_OUTPUT_FORMAT: "yaml"
 
 aws_users:
-- "testuser1"
-#- apigee-non-prod
-#- ayos
+- apigee-non-prod
+- ayos
+#- "testuser1"
 
 managed_policies_list:
 - "AdministratorAccess"
