@@ -1,8 +1,8 @@
 # Usage instructions
 # Building this Dockerfile
 # docker built -t apigee-workspace-v1 . && docker run -ti apigee-workspace-v1 bash
-#FROM gcr.io/cloudshell-images/cloudshell:latest AS basic_bootstrap
-FROM python:3.11.2 AS basic_bootstrap
+#FROM python:3.11.2 AS basic_bootstrap
+FROM gcr.io/cloudshell-images/cloudshell:latest AS basic_bootstrap
 RUN apt-get update -y \
     && apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev rsync -y
 RUN curl -O --output-dir /tmp https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz \
@@ -22,7 +22,7 @@ RUN mkdir -p /apigee-workspace/apigee-helm/bootstrap
 COPY utils/bootstrap/install-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/install-pyenv.sh
 COPY utils/bootstrap/configure-virtualenv.sh /apigee-workspace/apigee-helm/bootstrap/configure-virtualenv.sh
 WORKDIR /apigee-workspace/apigee-helm/bootstrap
-#RUN bash "install-pyenv.sh"
+RUN bash "install-pyenv.sh"
 #RUN bash "configure-virtualenv.sh"
 
 
