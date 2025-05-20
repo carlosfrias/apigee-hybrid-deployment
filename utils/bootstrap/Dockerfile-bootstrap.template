@@ -1,7 +1,7 @@
 # Usage instructions
 # Building this Dockerfile
 # docker built -t apigee-workspace-v1 . && docker run -ti apigee-workspace-v1 bash
-FROM python:3.11.2 AS basic_bootstrap
+FROM {{ BOOTSTRAP_IMAGE }} AS basic_bootstrap
 RUN apt-get update -y \
     && apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev rsync -y
 RUN curl -O --output-dir /tmp https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz \

@@ -21,3 +21,4 @@
       k8s:
         state: absent
         src: "{{ playbook_dir }}/cassandra-client-container-manifest-{{ CLUSTER_NAME }}.yml"
+

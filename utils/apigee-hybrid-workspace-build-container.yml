@@ -10,6 +10,12 @@
       - commmunity.docker
 
   tasks:
+    - name: Copy Docker Template file
+      template:
+        src: "{{ playbook_dir }}/bootstrap/Dockerfile-bootstrap.template"
+        dest: "{{ playbook_dir | dirname }}/Dockerfile"
+        force: true
+
     - name: Build image
       docker_image:
         name: "{{ dockerBuildName }}"
