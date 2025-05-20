@@ -1,5 +1,8 @@
 # Apigee hybrid Deployment Workspace
 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&cloudshell_tutorial=tutorial.md)
+
+
 This intent of this project is to create a portable workspace 
 from which to deploy an Apigee hybrid instance. This workspace
 can be used to quickly deploy a working hybrid instance or to roll
