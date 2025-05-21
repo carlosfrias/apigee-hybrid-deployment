@@ -5,7 +5,7 @@
 
   vars_files:
   - ~/.apigee-secure/credentials.yml
-  - aws-installer.yml
+  - aws-vars.yml
 
   vars:
     aws_users:

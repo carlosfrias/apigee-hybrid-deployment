@@ -5,6 +5,9 @@
 
   vars_files:
   - ~/.apigee-secure/credentials.yml
+  - resources/hybrid-org-host-metadata.yml
+  - resources/hybrid-common-attributes.yml
+  - resources/hybrid-region-dc-1.yml
   - aws-vars.yml
 
   collections:
