@@ -1,10 +1,9 @@
 # Apigee hybrid Deployment Workspace
 
-#[![Open in Cloud Shell Using Dockerfile](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git)
 [Open in Cloud Shell Using Dockerfile](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git)
 
 
-[![Open in Cloud Shell Using Image](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=us-east1-docker.pkg.dev/friasc-apigee-lab/apigee-workspace/apigee-cloudshell-workspace)
+[Open in Cloud Shell Using Image](https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=us-east1-docker.pkg.dev/friasc-apigee-lab/apigee-workspace/apigee-cloudshell-workspace)
 
 
 
