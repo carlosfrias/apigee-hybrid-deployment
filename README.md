@@ -3,7 +3,7 @@
 [Open in Cloud Shell Using Dockerfile](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git)
 
 
-[Open in Cloud Shell Using Image](https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=oci://us-east1-docker.pkg.dev/friasc-apigee-lab/apigee-workspace/apigee-cloudshell-workspace)
+[Open in Cloud Shell Using Image](https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-cloudshell-workspace)
 
 
 
