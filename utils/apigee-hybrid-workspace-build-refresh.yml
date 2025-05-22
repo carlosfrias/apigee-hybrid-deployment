@@ -1,5 +1,5 @@
 ---
-- name: Create and configure the docker repository
+- name: Assert and refresh local build workspace
   hosts: localhost
   connection: local
 

@@ -5,9 +5,9 @@
 #   -v $(pwd)/work_dir:/apigee-workspace/apigee-helm/work_dir:rw \
 #   -v $HOME/.config:/root/.config/gcloud:rw \
 #   -ti \
-#   {{ image_name }}:{{ tag }} bash
+#   {{ artifact_image_name }}:{{ tag }} bash
 docker run -v $HOME/.apigee-secure:/root/.apigee-secure:ro \
    -v $(pwd):/apigee-workspace/apigee-helm:rw \
    -v $HOME/.config:/root/.config/gcloud:rw \
    -ti \
-   {{ image_name }}:{{ tag }} bash
+   {{ artifact_image_name }}:{{ tag }} bash

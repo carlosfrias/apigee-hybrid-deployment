@@ -1,0 +1,37 @@
+---
+- name: Build and push to artifact repository
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  collections:
+  - commmunity.docker
+
+  tasks:
+    - name: Create repository
+      ignore_errors: true
+      shell: |
+        gcloud artifacts repositories create {{ artifact_repo_name }} \
+            --repository-format={{ artifact_repo_format }} \
+            --location={{ artifact_repo_location }} \
+            --description="Docker repository" \
+            --project={{ artifact_project_id }}
+
+    - name: Configure artifact repository docker authentication
+      shell: |
+          gcloud auth configure-docker {{ artifact_docker_protocol }} --project {{ artifact_project_id }}
+
+    - name: Push container to artifact repository
+      shell: |
+        docker push {{ artifact_image_name }}:{{ tag }}
+
+    - name: Configure gcr.io repository docker authentication
+      shell: |
+          gcloud auth configure-docker {{ gcr_io_protocol }} --project {{ gcr_io_project_id }}
+
+    - name: Push container to gcr.io repository
+      shell: |
+        docker push {{ gcr_io_image_name }}:{{ tag }}
+

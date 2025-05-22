@@ -10,15 +10,9 @@
       - commmunity.docker
 
   tasks:
-    - name: Copy Docker Template file
-      template:
-        src: "{{ playbook_dir }}/bootstrap/Dockerfile-bootstrap.template"
-        dest: "{{ playbook_dir | dirname }}/Dockerfile"
-        force: true
-
     - name: Build image
       docker_image:
-        name: "{{ dockerBuildName }}"
+        name: "{{ local_artifact_name }}"
         source: "build"
         build:
           path: "{{ SOURCE_DIR }}"
@@ -27,8 +21,8 @@
 
     - name: Create container
       docker_container:
-        name: "{{ dockerBuildName }}"
-        image: "{{ dockerBuildName }}"
+        name: "{{ container_name }}"
+        image: "{{ local_artifact_name }}"
         state: "started"
         auto_remove: yes
         detach: yes
@@ -37,7 +31,8 @@
 
     - name: Tag image
       community.docker.docker_image_tag:
-        name: "{{ dockerBuildName }}"
+        name: "{{ container_name }}"
         repository:
-        - "{{ image_name }}:{{ tag }}"
+        - "{{ artifact_image_name }}:{{ tag }}"
+        - "{{ gcr_io_image_name }}:{{ tag }}"
 

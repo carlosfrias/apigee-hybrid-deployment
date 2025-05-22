@@ -1,39 +1,51 @@
 ---
-PROJECT_ID: "friasc-apigee-lab"
-repoName: "apigee-workspace"
 tag: "v1.0"
-repoFormat: "docker"
-repoLocation: "us-east1"
-repoDockerProto: "{{repoLocation}}-docker.pkg.dev"
-SELECTED_IMAGE: 1
-container_names:
+
+CONTAINER_NAME_SELECTED: 0
+CONTAINER_NAMES:
 - "apigee-workspace"
-- "apigee-workspace"
-#- "apigee-cloudshell-workspace"
-dockerBuildName: "gcr.io/friasc-apigee-lab/{{ container_names[SELECTED_IMAGE] }}"
-LOCAL_BOOTSTRAP_IMAGES:
+- "apigee-cloudshell-workspace"
+container_name: "{{ CONTAINER_NAMES[CONTAINER_NAME_SELECTED] }}"
+
+BOOTSTRAP_IMAGE_SELECTED: 1
+BOOTSTRAP_IMAGES:
 - "python:3.11.2"
 - "gcr.io/cloudshell-images/cloudshell:latest"
-BOOTSTRAP_IMAGE: "{{ LOCAL_BOOTSTRAP_IMAGES[SELECTED_IMAGE] }}"
+bootstrap_image: "{{ BOOTSTRAP_IMAGES[BOOTSTRAP_IMAGE_SELECTED] }}"
+
+artifact_repo_format: "docker"
+artifact_project_id: "friasc-apigee-lab"
+artifact_repo_name: "apigee-workspace"
+artifact_repo_location: "us-east1"
+artifact_docker_protocol: "{{ artifact_repo_location }}-docker.pkg.dev"
+artifact_image_name: "{{ artifact_docker_protocol }}/{{ artifact_project_id }}/{{ artifact_repo_name }}/{{ container_name }}"
+
+local_artifact_name: "{{ container_name }}"
+
+gcr_io_project_id: "cloudshell-images"
+gcr_io_protocol: "gcr.io"
+gcr_io_image_name: "{{ gcr_io_protocol }}/{{ artifact_project_id }}/{{ container_name }}"
+
 SOURCE_DIR:  "{{ playbook_dir | dirname }}"
 WORK_DIR: "{{ SOURCE_DIR }}/work_dir"
-APIGEE_WORKBENCH_NAME: "apigee-hybrid-workspace"
-APIGEE_HYBRID_INSTALLER_GITHUB: "https://github.com/carlosfrias/{{ APIGEE_WORKBENCH_NAME }}.git"
+
+APIGEE_HYBRID_WORKBENCH_NAME: "apigee-hybrid-workspace"
+APIGEE_HYBRID_INSTALLER_GITHUB: "https://github.com/carlosfrias/{{ APIGEE_HYBRID_WORKBENCH_NAME }}.git"
 APIGEE_HYBRID_INSTALLER_SOURCE_FOLDER: "bap_coe/apigee_helm/playbooks/molecule"
-APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE: "{{ WORK_DIR }}/source-repos/{{ APIGEE_WORKBENCH_NAME }}/{{ APIGEE_HYBRID_INSTALLER_SOURCE_FOLDER }}"
+APIGEE_HYBRID_INSTALLER_MOLECULE_SOURCE: "{{ WORK_DIR }}/source-repos/{{ APIGEE_HYBRID_WORKBENCH_NAME }}/{{ APIGEE_HYBRID_INSTALLER_SOURCE_FOLDER }}"
 APIGEE_HYBRID_INSTALLER_MOLECULE_DEST: "{{ SOURCE_DIR }}"
 APIGEE_HYBRID_ON_AWS_NAME: "apigee-hybrid-on-aws"
 APIGEE_HYBRID_ON_AWS_GITHUB: "https://github.com/AyoSal/{{ APIGEE_HYBRID_ON_AWS_NAME }}"
 APIGEE_HYBRID_ON_AWS_SOURCE_FOLDER: "{{ APIGEE_HYBRID_ON_AWS_NAME }}"
 GITHUB_REPOS:
-- { repo: "{{ APIGEE_HYBRID_INSTALLER_GITHUB }}", dest: "{{ WORK_DIR }}/source-repos/{{ APIGEE_WORKBENCH_NAME }}" }
+- { repo: "{{ APIGEE_HYBRID_INSTALLER_GITHUB }}", dest: "{{ WORK_DIR }}/source-repos/{{ APIGEE_HYBRID_WORKBENCH_NAME }}" }
 - { repo: "{{ APIGEE_HYBRID_ON_AWS_GITHUB }}", dest: "{{ WORK_DIR }}/source-repos/{{ APIGEE_HYBRID_ON_AWS_NAME }}" }
 #- { repo: "https://github.com/ganadurai/single-node-apigee-hybrid-install.git", dest: "{{ WORK_DIR }}/source-repos/single-node-apigee-hybrid-install"}
 
-#image_name: "{{ repoLocation }}-docker.pkg.dev/{{ PROJECT_ID }}/{{ repoName }}/{{ dockerBuildName }}"
-image_name: "gcr.io/friasc-apigee-lab/{{ dockerBuildName }}"
-start_container_template: "{{ SOURCE_DIR }}/utils/start-container.sh.template"
-start_container_dest: "{{ SOURCE_DIR }}"
+templates:
+- { src: "{{ SOURCE_DIR }}/utils/bootstrap/start-container.sh.template", dest: "{{ SOURCE_DIR }}/start-container.sh" }
+- { src: "{{ SOURCE_DIR }}/utils/bootstrap/Dockerfile.template", dest: "{{ SOURCE_DIR }}/Dockerfile" }
+- { src: "{{ SOURCE_DIR }}/utils/bootstrap/README.md.template", dest: "{{ SOURCE_DIR }}/README.md" }
 
 container_volumes:
 - "{{ ansible_user_dir }}/.apigee-secure:/root/apigee-secure:ro"
@@ -48,3 +60,5 @@ OUTPUT_FOLDERS:
 
 OUTPUT_FILES:
 - "{{ SOURCE_DIR }}/start-container.sh"
+- "{{ SOURCE_DIR }}/Dockerfile"
+- "{{ SOURCE_DIR }}/README.md"

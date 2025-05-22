@@ -7,10 +7,17 @@
   - apigee-hybrid-workspace-build-variables.yml
 
   tasks:
-    - name: Clean prior output files
+    - name: Clean output folders
       become: yes
       file:
         path: "{{ item }}"
         state: absent
       with_items: "[{{ OUTPUT_FOLDERS }}, {{ OUTPUT_FILES }}]"
+
+    - name: Clean generated files
+      become: yes
+      file:
+        path: "{{ item.dest }}"
+        state: absent
+      with_items: "{{ templates }}"
 

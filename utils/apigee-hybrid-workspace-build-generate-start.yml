@@ -1,5 +1,5 @@
 ---
-- name: Generate start-container.sh script
+- name: Generate from templates
   hosts: localhost
   connection: local
 
@@ -7,10 +7,10 @@
   - apigee-hybrid-workspace-build-variables.yml
 
   tasks:
-    - name: Generate start-container.sh script
+    - name: Generate updated files
       template:
-        src: "{{ SOURCE_DIR }}/utils/bootstrap/start-container.sh.template"
-        dest: "{{ SOURCE_DIR }}/start-container.sh"
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
         mode: 0777
-        backup: yes
+      with_items: "{{ templates }}"
 

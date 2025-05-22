@@ -20,9 +20,10 @@ FROM gcloud AS pyenv
 RUN mkdir -p /apigee-workspace/apigee-helm/bootstrap
 COPY utils/bootstrap/install-pyenv.sh /apigee-workspace/apigee-helm/bootstrap/install-pyenv.sh
 COPY utils/bootstrap/configure-virtualenv.sh /apigee-workspace/apigee-helm/bootstrap/configure-virtualenv.sh
-WORKDIR /apigee-workspace/apigee-helm/bootstrap
-RUN bash "install-pyenv.sh"
-RUN bash "configure-virtualenv.sh"
+
+# WORKDIR /apigee-workspace/apigee-helm/bootstrap
+# RUN bash "install-pyenv.sh"
+# RUN bash "configure-virtualenv.sh"
 
 
 FROM pyenv
@@ -30,8 +31,8 @@ WORKDIR /apigee-workspace/apigee-helm
 COPY molecule /apigee-workspace/apigee-helm/molecule/
 COPY resources /apigee-workspace/apigee-helm/resources/
 COPY utils /apigee-workspace/apigee-helm/utils/
-RUN bash -x /apigee-workspace/apigee-helm/utils/bootstrap/activate-virtualenv-workspace.sh \
-    && mkdir -p work_dir \
+# RUN bash -x /apigee-workspace/apigee-helm/utils/bootstrap/activate-virtualenv-workspace.sh
+RUN mkdir -p work_dir \
     && chmod -R +w work_dir \
     && mkdir -p ~/.apigee-secure \
     && cp resources/credentials.yml.template ~/.apigee-secure/credentials.yml
