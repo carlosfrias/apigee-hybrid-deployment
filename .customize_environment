@@ -1,0 +1,49 @@
+#!/bin/sh
+apt-get update
+apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev rsync -y
+curl -O --output-dir /tmp https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+tar -xf /tmp/google-cloud-cli-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh -q
+echo 'export PATH="/google-cloud-sdk/bin:$PATH"' >> $HOME/.bashrc
+echo 'export PATH="/google-cloud-sdk/bin:$PATH"' >> $HOME/.profile
+
+mkdir -p /apigee-workspace/apigee-helm/work_dir
+
+curl -fsSL https://pyenv.run | bash
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> $HOME/.bashrc
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> $HOME/.profile
+echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
+echo 'eval $(pyenv init - bash)' >> $HOME/.bashrc
+echo 'eval $(pyenv init - bash)' >> $HOME/.profile
+echo 'eval $(pyenv virtualenv-init -)' >> $HOME/.bashrc
+echo 'eval $(pyenv virtualenv-init -)' >> $HOME/.profile
+
+echo "*** Showing .bashrc contents ***"
+cat $HOME/.bashrc
+echo "*** Showing .bashrc contents complete ***"
+echo "========"
+echo "*** PATH contents ***"
+source $HOME/.bashrc
+echo $PATH
+echo "*** PATH contents complete ***"
+
+source $HOME/.bashrc
+pyenv update
+pyenv install 3.13.3
+pyenv global 3.13.3
+pyenv virtualenv 3.13.3 apigee-workspace
+pyenv activate apigee-workspace
+
+cd /apigee-workspace/apigee-helm/
+for package in ['passlib','apache-libcloud','google-auth','requests','ansible','molecule','molecule-gce','pyasn1_modules','jmespath','ansible-lint','yamllint','pycryptodome','NumPy','netaddr','jsonpatch','kubernetes','botocore',boto3']
+  pip install $package
+done
+
+cd work_dir
+git clone "https://github.com/carlosfrias/apigee-hybrid-workspace.git"
+
+
+
+
+

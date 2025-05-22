@@ -12,7 +12,9 @@
   tasks:
     - name: Configure docker authentication
       shell: |
-        gcloud auth configure-docker {{ repoLocation }}-docker.pkg.dev --project {{ PROJECT_ID }}
+        gcloud auth configure-docker gcr.io --project friasc-apigee-lab
+
+  #        gcloud auth configure-docker {{ repoLocation }}-docker.pkg.dev --project {{ PROJECT_ID }}
 
     - name: Create repository
       ignore_errors: true
