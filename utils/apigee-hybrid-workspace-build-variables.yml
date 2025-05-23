@@ -20,7 +20,7 @@ artifact_repo_location: "us-east1"
 artifact_docker_protocol: "{{ artifact_repo_location }}-docker.pkg.dev"
 artifact_image_name: "{{ artifact_docker_protocol }}/{{ artifact_project_id }}/{{ artifact_repo_name }}/{{ container_name }}"
 
-local_artifact_name: "{{ container_name }}"
+#local_artifact_name: "{{ container_name }}"
 
 gcr_io_project_id: "cloudshell-images"
 gcr_io_protocol: "gcr.io"

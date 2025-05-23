@@ -12,7 +12,7 @@
   tasks:
     - name: Build image
       docker_image:
-        name: "{{ local_artifact_name }}"
+        name: "{{ artifact_image_name }}"
         source: "build"
         build:
           path: "{{ SOURCE_DIR }}"
@@ -22,7 +22,7 @@
     - name: Create container
       docker_container:
         name: "{{ container_name }}"
-        image: "{{ local_artifact_name }}"
+        image: "{{ artifact_image_name }}"
         state: "started"
         auto_remove: yes
         detach: yes
@@ -31,8 +31,7 @@
 
     - name: Tag image
       community.docker.docker_image_tag:
-        name: "{{ container_name }}"
+        name: "{{ artifact_image_name }}"
         repository:
-        - "{{ artifact_image_name }}:{{ tag }}"
         - "{{ gcr_io_image_name }}:{{ tag }}"
 
