@@ -5,4 +5,4 @@ test_*
 work_dir/
 molecule/
 start-container.sh
-
+.ansible/

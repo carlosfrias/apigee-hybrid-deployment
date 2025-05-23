@@ -1,7 +1,8 @@
 ---
 PROJECT_ID:  "sample-20250508-1340"
-SOURCE_DIR: "{{ playbook_dir }}"
+SOURCE_DIR:  "{{ playbook_dir | dirname | dirname }}"
 WORK_DIR: "{{ SOURCE_DIR }}/work_dir/source-repos/apigee-hybrid-on-aws"
+
 TERRAFORM_PATH_PROJECT: "{{ WORK_DIR }}"
 TERRAFORM_PATH_BIN:  "{{ '~' | expanduser }}/bin"
 TERRAFORM_LOG_FILE: "terraform.log"
