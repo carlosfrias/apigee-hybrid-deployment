@@ -1,16 +1,7 @@
 ---
-- name: Clean workspace
-  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-clean.yml"
-
-- name: Generate start-container.sh script
-  import_playbook:  "{{ playbook_dir }}/apigee-hybrid-workspace-build-generate-start.yml"
-
-- name: Refresh workspace
-  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-refresh.yml"
-
 - name: Build container
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-container.yml"
 
-- name: Push artifact to repository
+- name: Push artifact to repositories
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-distribution.yml"
 

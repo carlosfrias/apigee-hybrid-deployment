@@ -1,4 +1,10 @@
 ---
+- name: Generate start
+  import_playbook: apigee-hybrid-workspace-build-generate-start.yml
+
+- name: Refresh build files
+  import_playbook: apigee-hybrid-workspace-build-refresh.yml
+
 - name: Build container
   hosts: localhost
   connection: local
@@ -33,5 +39,6 @@
       community.docker.docker_image_tag:
         name: "{{ artifact_image_name }}"
         repository:
+        - "{{ artifact_image_name }}:{{ tag }}"
         - "{{ gcr_io_image_name }}:{{ tag }}"
 

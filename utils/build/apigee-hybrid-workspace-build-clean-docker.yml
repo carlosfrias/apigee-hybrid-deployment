@@ -1,0 +1,19 @@
+---
+- name: Clean the local docker repository
+  hosts: localhost
+  connection: local
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  tasks:
+    - name: Clean local docker container runs
+      ignore_errors:  true
+      shell: |
+        docker rm -f $(docker ps -aq)
+
+    - name: Clean local docker images
+      ignore_errors:  true
+      shell: |
+        docker rmi -f $(docker images -aq)
+

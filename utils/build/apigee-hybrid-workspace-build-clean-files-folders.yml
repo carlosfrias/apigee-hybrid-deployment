@@ -1,0 +1,21 @@
+---
+- name: Clean generated files and folders
+  hosts: localhost
+  connection: local
+  become: yes
+
+  vars_files:
+  - apigee-hybrid-workspace-build-variables.yml
+
+  tasks:
+    - name: Clean output folders
+      file:
+        path: "{{ item }}"
+        state: absent
+
+      with_items: "[{{ OUTPUT_FOLDERS }}, {{ OUTPUT_FILES }}]"
+    - name: Clean generated files
+      file:
+        path: "{{ item.dest }}"
+        state: absent
+      with_items: "{{ templates }}"

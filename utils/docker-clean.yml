@@ -1,0 +1,11 @@
+---
+- name: Clean docker images
+  hosts: localhost
+  connection: local
+
+  tasks:
+  - name: Clean any processes
+    shell:  docker rm -f $(docker ps -aq)
+
+  - name: Clean any images
+    shell: docker rmi -f $(docker images -aq)
