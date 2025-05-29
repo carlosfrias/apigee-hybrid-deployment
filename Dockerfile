@@ -6,7 +6,41 @@ FROM gcr.io/cloudshell-images/cloudshell:latest AS basic_bootstrap
 SHELL ["/bin/bash", "-l", "-c"]
 
 RUN apt-get update -y \
-    && apt-get install software-properties-common curl git mc vim facter aptitude apt-utils apt-transport-https ca-certificates gnupg python3-pip libssl-dev libffi-dev rsync -y
+    && apt-get install -y --no-install-recommends \
+               make \
+               build-essential \
+               libssl-dev \
+               zlib1g-dev \
+               libbz2-dev \
+               libreadline-dev \
+               libsqlite3-dev \
+               wget \
+               curl \
+               llvm \
+               libncurses5-dev \
+               libncursesw5-dev \
+               xz-utils \
+               tk-dev \
+               libffi-dev \
+               liblzma-dev \
+               git \
+               software-properties-common \
+               curl \
+               git \
+               mc \
+               vim \
+               facter \
+               aptitude \
+               apt-utils \
+               apt-transport-https \
+               ca-certificates \
+               gnupg \
+               python3-pip \
+               libssl-dev \
+               libffi-dev \
+               rsync
+
+
 RUN curl -O --output-dir /tmp https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz \
     && tar -xf /tmp/google-cloud-cli-linux-x86_64.tar.gz \
     && ./google-cloud-sdk/install.sh -q \
@@ -36,37 +70,21 @@ WORKDIR /apigee-workspace/apigee-helm/bootstrap
 # 1. Install pyenv dependencies (many might be covered by basic_bootstrap but good to be explicit)
 # 2. Clone pyenv repository
 # 3. Update .profile and .bashrc for pyenv initialization
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-        make \
-        build-essential \
-        libssl-dev \
-        zlib1g-dev \
-        libbz2-dev \
-        libreadline-dev \
-        libsqlite3-dev \
-        wget \
-        curl \
-        llvm \
-        libncurses5-dev \
-        libncursesw5-dev \
-        xz-utils \
-        tk-dev \
-        libffi-dev \
-        liblzma-dev \
-        git \
-    && git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv" \
-    && echo '' >> "$HOME/.profile" \
-    && echo '# pyenv configuration' >> "$HOME/.profile" \
-    && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.profile" \
-    && echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.profile" \
-    && echo 'eval "$(pyenv init -)"' >> "$HOME/.profile" \
-    && echo '' >> "$HOME/.bashrc" \
-    && echo '# pyenv configuration' >> "$HOME/.bashrc" \
-    && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.bashrc" \
-    && echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.bashrc" \
-    && echo 'eval "$(pyenv init -)"' >> "$HOME/.bashrc" \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# RUN git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv" \
+#     && echo '' >> "$HOME/.profile" \
+#     && echo '# pyenv configuration' >> "$HOME/.profile" \
+#     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.profile" \
+#     && echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.profile" \
+#     && echo 'eval "$(pyenv init -)"' >> "$HOME/.profile" \
+#     && echo 'eval "$(pyenv virtualenv-init -)"' >> "$HOME/.profile" \
+#     && echo '' >> "$HOME/.bashrc" \
+#     && echo '# pyenv configuration' >> "$HOME/.bashrc" \
+#     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.bashrc" \
+#     && echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.bashrc" \
+#     && echo 'eval "$(pyenv init -)"' >> "$HOME/.bashrc" \
+#     && echo 'eval "$(pyenv virtualenv-init -)"' >> "$HOME/.bashrc" \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Now, run configure-virtualenv.sh in a *new* RUN layer.
 # This new layer starts a fresh login shell which will source the updated .profile (and .bashrc),
@@ -74,22 +92,20 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 # RUN bash "configure-virtualenv.sh"
 
 # In your Dockerfile, after pyenv has been installed and shell profiles updated:
-
 # This RUN instruction incorporates the logic from configure-virtualenv.sh
 # RUN source $HOME/.bashrc \
-#     && /bin/bash -l -c "pyenv update" \
-#     && pyenv install --skip-existing 3.13.3 \
+#     && export PATH=$HOME/.pyenv:$PATH pyenv update \
+#     && pyenv install 3.13.3 -s \
 #     && pyenv global 3.13.3 \
 #     && pyenv virtualenv 3.13.3 apigee-workspace \
 #     && pyenv activate apigee-workspace \
 #     && echo "Python environment 'apigee-workspace' is now active for any subsequent commands in this RUN instruction." \
 #     && python --version \
-#     && pip --version
-    # Add any other commands here that should run within the activated 'apigee-workspace' environment
-    # For example: pip install -r requirements.txt
+#     && pip --version \
+#     && pyenv activate apigee-workspace \
+#     && pip install -r /apigee-workspace/apigee-helm/resources/requirements.txt
 
 # ... (subsequent stages, e.g., the final stage) ...
-
 FROM pyenv
 SHELL ["/bin/bash", "-l", "-c"]
 WORKDIR /apigee-workspace/apigee-helm
@@ -100,10 +116,9 @@ COPY utils /apigee-workspace/apigee-helm/utils/
 # The SHELL ["/bin/bash", "-l", "-c"] is inherited.
 # This RUN command will execute in a login shell, sourcing .profile,
 # so pyenv and any activated virtual environment should be available.
-# RUN source $HOME/.profile \
-#     && bash -x /apigee-workspace/apigee-helm/utils/bootstrap/activate-virtualenv-workspace.sh \
-#     && mkdir -p work_dir \
-#     && chmod -R +w work_dir \
-#     && mkdir -p ~/.apigee-secure \
-#     && cp resources/credentials.yml.template ~/.apigee-secure/credentials.yml
+RUN mkdir -p work_dir \
+    && chmod -R +w work_dir \
+    && mkdir -p ~/.apigee-secure \
+    && cp resources/credentials.yml.template ~/.apigee-secure/credentials.yml \
+    && pip install -r /apigee-workspace/apigee-helm/resources/requirements.txt
 ENTRYPOINT bash

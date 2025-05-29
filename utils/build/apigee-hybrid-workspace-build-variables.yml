@@ -62,3 +62,4 @@ OUTPUT_FILES:
 - "{{ SOURCE_DIR }}/start-container.sh"
 - "{{ SOURCE_DIR }}/Dockerfile"
 - "{{ SOURCE_DIR }}/README.md"
+- "{{ SOURCE_DIR }}/terraform.log"

@@ -1,17 +1,16 @@
-# Doesn't work when these instructions are included in the build file and executed with RUN
-# Works when the RUN executes this script.
+#!/bin/bash
 
-echo 'Installing pyenv'
-
-curl -fsSL https://pyenv.run | bash
-echo 'export PYENV_ROOT=$HOME/.pyenv' >> $HOME/.bashrc
-echo 'export PYENV_ROOT=$HOME/.pyenv' >> $HOME/.profile
-echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> $HOME/.bashrc
-echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> $HOME/.profile
-echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
-echo 'eval "$(pyenv init - bash)"' >> $HOME/.bashrc
-echo 'eval "$(pyenv init - bash)"' >> $HOME/.profile
-echo 'eval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
-echo 'eval "$(pyenv virtualenv-init -)"' >> $HOME/.profile
-source $HOME/.bashrc
+git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
+echo '' >> "$HOME/.profile"
+echo '# pyenv configuration' >> "$HOME/.profile"
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.profile"
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.profile"
+echo 'eval "$(pyenv init -)"' >> "$HOME/.profile"
+echo '' >> "$HOME/.bashrc"
+echo '# pyenv configuration' >> "$HOME/.bashrc"
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> "$HOME/.bashrc"
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> "$HOME/.bashrc"
+echo 'eval "$(pyenv init -)"' >> "$HOME/.bashrc"
+echo 'eval "$(pyenv virtualenv-init -)"' >> "$HOME/.bashrc"
+apt-get clean
+rm -rf /var/lib/apt/lists/*
