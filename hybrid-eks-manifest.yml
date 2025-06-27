@@ -1,0 +1,64 @@
+- AccessConfig:
+    AuthenticationMode: API_AND_CONFIG_MAP
+    BootstrapClusterCreatorAdminPermissions: null
+  Arn: arn:aws:eks:us-east-1:822626720752:cluster/hybrid-eks-Xiir3jHa
+  CertificateAuthority:
+    Data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJZUd6YTdueUVCc3d3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBMU1USXhPVFExTXpKYUZ3MHpOVEExTVRBeE9UVXdNekphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUM4ZkRoUmNTQmFVcmNncWN6OCsvaERsQ0lnanYrb0NxM081NmNiRnZyTmJMOHZpUGh3ejBXOGtFTG0KZXZ1b1ovWCsvVXMvMkhJUFg0ZGFvWU1nOWsySVZuMjVweDlwMXJhVkh6VFB0bnYxMlplVDRiR045a21WVVVhVwpsZGppZE1icnFRVXRBeHAwS2g3K1VvUytTa3pTSEZEMkhkWk1XeDJGZDI5Q2dlN0ZKMWwxbmtwOWV6NjdKWUZQCmFDSXdTV0pxeTBqZDJsSnB2bEJCdm9hNFVzWnNBbndqVi9Gb1Y2d1ZwQ0F2cCt0cTA0V2UrYnUybk01M0VTNXoKdmdtUU9BWndFUzAxM0xkVGozQVdVbGdiU0ZaWms1Z0VYRWN3S1QvdXBTMGdDb09iY05aUnFpbFhVOXRpL1N1TgpKTXFHc3Y3ZjJqbEZZbzNpbWlERDgvaW5RSTIzQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTRjR0K0J5NGNsSVUvamtjNjN4R1FiMVFDQU1EQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQkVLemExdjgvYgpReUtyYXAzekoyUjlDUVBNSnlsemZ4emtRTHRMbm4vbDk4VnFVY2wzaVJabDIzRG5VNkQ2ekQ2VzFBSFRwOVdvCldyQ2VUbWhzV3EycG5ZaGw1ODRRc0ZpSFA1ZW1iM29NUUZ3alMrcS9NS2QwOEdBbWFEU2p0cDE5OCs0eXhINzAKM1lEcGdtT2NrOXdYOWtLVnk4MWc2bUhoYkpIY3MrY3JUMmpOWm8yWnd6cW1lajJwS3Fpa01WYXVxWVZQL3VVWgpka0tWQmZGaU1tc2NTU3BsTkdjNmtIQW9mZzdGS1FkNXRhaVQ5U242V3JMSjRCclFyRlJIaGNUM1FZcm0wVVhiCnNCZmRlMUtCYXIyL1l2NjBiaWFjb3VlN1laWWpwbXlnQmNUbnZ3dGNKUnM3Um4wejQ0NSs1WHNhNHlVbmZmVE8KZExVNk1rNnZTUXBVCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  ClientRequestToken: null
+  ComputeConfig: null
+  ConnectorConfig: null
+  CreatedAt: "2025-05-12T19:45:47.877Z"
+  EncryptionConfig:
+  - Provider:
+      KeyArn: arn:aws:kms:us-east-1:822626720752:key/8517d74c-5446-4be3-a5aa-879574c4ac4e
+    Resources:
+    - secrets
+  Endpoint: https://D9121069E3D6BE3AE20BF0C950D5F9E0.gr7.us-east-1.eks.amazonaws.com
+  Health:
+    Issues: []
+  Id: null
+  Identity:
+    Oidc:
+      Issuer: https://oidc.eks.us-east-1.amazonaws.com/id/D9121069E3D6BE3AE20BF0C950D5F9E0
+  KubernetesNetworkConfig:
+    ElasticLoadBalancing:
+      Enabled: false
+    IpFamily: ipv4
+    ServiceIpv4Cidr: 172.20.0.0/16
+    ServiceIpv6Cidr: null
+  Logging:
+    ClusterLogging:
+    - Enabled: true
+      Types:
+      - api
+      - audit
+      - authenticator
+    - Enabled: false
+      Types:
+      - controllerManager
+      - scheduler
+  Name: hybrid-eks-Xiir3jHa
+  OutpostConfig: null
+  PlatformVersion: eks.36
+  RemoteNetworkConfig: null
+  ResourcesVpcConfig:
+    ClusterSecurityGroupId: sg-0aeb57d928f0db926
+    EndpointPrivateAccess: true
+    EndpointPublicAccess: true
+    PublicAccessCidrs:
+    - 0.0.0.0/0
+    SecurityGroupIds:
+    - sg-07cda9efec52b6d96
+    SubnetIds:
+    - subnet-0e70ddc3ef7870869
+    - subnet-0226b4ba9f104abe3
+    VpcId: vpc-06ea441abc06876bd
+  RoleArn: arn:aws:iam::822626720752:role/hybrid-eks-Xiir3jHa-cluster-20250508184728884200000003
+  Status: ACTIVE
+  StorageConfig: null
+  Tags:
+    terraform-aws-modules: eks
+  UpgradePolicy:
+    SupportType: EXTENDED
+  Version: "1.29"
+  ZonalShiftConfig: null

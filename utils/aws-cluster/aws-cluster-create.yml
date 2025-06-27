@@ -1,0 +1,26 @@
+---
+- name: AWS Cluster creator
+  hosts: localhost
+  connection: local
+
+  collections:
+  - community.aws
+
+  vars_files:
+  - ~/.apigee-secure/credentials.yml
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-org-host-metadata.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-common-attributes.yml"
+  - "{{ playbook_dir | dirname | dirname }}/resources/hybrid-region-dc-1.yml"
+  - aws-vars.yml
+
+  tasks:
+  - name: Create cluster
+    eks_cluster:
+      name: test1
+      state: present
+      access_key: "{{ AWS_ACCESS_KEY }}"
+      secret_key: "{{ AWS_ACCESS_KEY_SECRET }}"
+      region: us-east-1
+      role_arn: "{{ aws_users[0] }}"
+      subnets:
+      security_groups:

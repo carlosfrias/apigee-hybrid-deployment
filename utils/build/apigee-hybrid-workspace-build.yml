@@ -1,4 +1,10 @@
 ---
+- name: Docker clean
+  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-clean-docker.yml"
+
+- name: Build clean
+  import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-clean.yml"
+
 - name: Build container
   import_playbook: "{{ playbook_dir }}/apigee-hybrid-workspace-build-container.yml"
 

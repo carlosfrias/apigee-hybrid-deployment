@@ -1,7 +1,7 @@
 ---
 tag: "v1.0"
 
-SOURCE_DIR:  "{{ playbook_dir | dirname | dirname }}"
+SOURCE_DIR: "{{ playbook_dir | dirname | dirname }}"
 WORK_DIR: "{{ SOURCE_DIR }}/work_dir"
 
 CONTAINER_NAME_SELECTED: 0
@@ -43,9 +43,9 @@ GITHUB_REPOS:
 #- { repo: "https://github.com/ganadurai/single-node-apigee-hybrid-install.git", dest: "{{ WORK_DIR }}/source-repos/single-node-apigee-hybrid-install"}
 
 templates:
-- { src: "{{ SOURCE_DIR }}/utils/bootstrap/start-container.sh.template", dest: "{{ SOURCE_DIR }}/start-container.sh" }
+- { src: "{{ SOURCE_DIR }}/utils/bootstrap/start-container-template.sh", dest: "{{ SOURCE_DIR }}/start-container.sh" }
 - { src: "{{ SOURCE_DIR }}/utils/bootstrap/Dockerfile.template", dest: "{{ SOURCE_DIR }}/Dockerfile" }
-- { src: "{{ SOURCE_DIR }}/utils/bootstrap/README.md.template", dest: "{{ SOURCE_DIR }}/README.md" }
+- { src: "{{ SOURCE_DIR }}/utils/bootstrap/README-template.md", dest: "{{ SOURCE_DIR }}/README.md" }
 
 container_volumes:
 - "{{ ansible_user_dir }}/.apigee-secure:/root/apigee-secure:ro"
@@ -63,3 +63,37 @@ OUTPUT_FILES:
 - "{{ SOURCE_DIR }}/Dockerfile"
 - "{{ SOURCE_DIR }}/README.md"
 - "{{ SOURCE_DIR }}/terraform.log"
+
+SYSTEM_PACKAGES:
+- make
+- build-essential
+- libssl-dev
+- zlib1g-dev
+- libbz2-dev
+- libreadline-dev
+- libsqlite3-dev
+- wget
+- curl
+- llvm
+- libncurses5-dev
+- libncursesw5-dev
+- xz-utils
+- tk-dev
+- libffi-dev
+- liblzma-dev
+- git
+- software-properties-common
+- curl
+- git
+- mc
+- vim
+- facter
+- aptitude
+- apt-utils
+- apt-transport-https
+- ca-certificates
+- gnupg
+- python3-pip
+- libssl-dev
+- libffi-dev
+- rsync

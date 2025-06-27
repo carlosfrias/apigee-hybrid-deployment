@@ -1,0 +1,9 @@
+---
+- name: Install awscli
+  import_playbook:  aws-awscli-installer.yml
+
+- name: Install Cilium plugin
+  import_playbook: aws-cilium-installer.yml
+
+- name: Install eksctl cli
+  import_playbook: aws-eksctl-installer.yml
