@@ -1,6 +1,7 @@
 ---
 tag: "v1.0"
 
+CREDENTIALS_DIR: "{{ '~' | expanduser }}/.apigee-secure"
 SOURCE_DIR: "{{ playbook_dir | dirname | dirname }}"
 WORK_DIR: "{{ SOURCE_DIR }}/work_dir"
 
