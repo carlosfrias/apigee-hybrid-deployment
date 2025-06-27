@@ -56,21 +56,6 @@ WORKDIR /apigee-workspace/apigee-helm/bootstrap
 # making the pyenv command and its shims available to configure-virtualenv.sh.
 # RUN bash "configure-virtualenv.sh"
 
-# In your Dockerfile, after pyenv has been installed and shell profiles updated:
-# This RUN instruction incorporates the logic from configure-virtualenv.sh
-# RUN source $HOME/.bashrc \
-#     && export PATH=$HOME/.pyenv:$PATH pyenv update \
-#     && pyenv install 3.13.3 -s \
-#     && pyenv global 3.13.3 \
-#     && pyenv virtualenv 3.13.3 apigee-workspace \
-#     && pyenv activate apigee-workspace \
-#     && echo "Python environment 'apigee-workspace' is now active for any subsequent commands in this RUN instruction." \
-#     && python --version \
-#     && pip --version \
-#     && pyenv activate apigee-workspace \
-#     && pip install -r /apigee-workspace/apigee-helm/resources/requirements.txt
-
-# ... (subsequent stages, e.g., the final stage) ...
 FROM pyenv
 SHELL ["/bin/bash", "-l", "-c"]
 WORKDIR /apigee-workspace/apigee-helm

@@ -1,44 +1,29 @@
 # Apigee hybrid Deployment Workspace
 
-[Open in Cloud Shell Using Dockerfile](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git)
+This is a portable workspace from which to deploy an Apigee hybrid instance. 
+This workspace can be used to deploy a prescribed working hybrid instance or 
+to work with portions of the installation so that different configurations can 
+be either tested or explored. This is particularly useful when either a new 
+Apigee hybrid version is released or in alignment with a customer situation in the 
+service of a customer question. 
 
+# Apigee hybrid Deployment Workspace Quickstart
 
-[Open in Cloud Shell Using Image](https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-workspace)
+[//]: # (This workspace can be deployed in a local docker container or using CloudShell. )
 
+[//]: # (## Open Using Cloud Shell - &#40;UNDER CONSTRUCTION&#41;)
 
+[//]: # ()
+[//]: # ([Open in Cloud Shell Using Dockerfile]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&#41;)
 
+[//]: # ()
+[//]: # ()
+[//]: # ([Open in Cloud Shell Using Image]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-workspace&#41;)
 
+[//]: # ()
+[//]: # (    [![Open in Cloud Shell]&#40;https://gstatic.com/cloudssh/images/open-btn.svg&#41;]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&cloudshell_tutorial=tutorial.md&#41;)
 
-    [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&cloudshell_tutorial=tutorial.md)
+[//]: # ()
 
+## Quickstart Configuration
 
-This intent of this project is to create a portable workspace 
-from which to deploy an Apigee hybrid instance. This workspace
-can be used to quickly deploy a working hybrid instance or to roll
-back portions of the build so that configuration changes can be 
-tested either in service of a release or to answer a question. 
-This project also saves on Argolis billing costs because instead of
-maintaining a running instance(s) of hybrid you can maintain configurations
-that can be deployed repeatedly to a known state. 
-
-
-
-
-# AWSCLI installer
-
-
-pip3 install awscli --upgrade
-pip3 install boto --upgrade
-pip3 install s3transfer --upgrade
-
-aws --version
-aws configure
-
-## Install terraform 
-
-```bash
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
-
-```
