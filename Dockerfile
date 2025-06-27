@@ -65,7 +65,7 @@ COPY utils /apigee-workspace/apigee-helm/utils/
 
 # The SHELL ["/bin/bash", "-l", "-c"] is inherited.
 # This RUN command will execute in a login shell, sourcing .profile,
-# so pyenv and any activated virtual environment should be available.
+# which should activate pyenv. However, pyenv has not been available so leaving it off for now.
 RUN mkdir -p work_dir \
     && chmod -R +w work_dir \
     && mkdir -p ~/.apigee-secure \
