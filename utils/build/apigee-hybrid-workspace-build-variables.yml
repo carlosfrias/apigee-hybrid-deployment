@@ -23,11 +23,9 @@ artifact_repo_location: "us-east1"
 artifact_docker_protocol: "{{ artifact_repo_location }}-docker.pkg.dev"
 artifact_image_name: "{{ artifact_docker_protocol }}/{{ artifact_project_id }}/{{ artifact_repo_name }}/{{ container_name }}"
 
-#local_artifact_name: "{{ container_name }}"
-
 gcr_io_project_id: "cloudshell-images"
 gcr_io_protocol: "gcr.io"
-gcr_io_image_name: "{{ gcr_io_protocol }}/{{ artifact_project_id }}/{{ container_name }}"
+gcr_io_image_name: "{{ gcr_io_protocol }}/{{ artifact_project_id }}/{{ container_name }}:{{ tag }}"
 
 APIGEE_HYBRID_WORKBENCH_NAME: "apigee-hybrid-workspace"
 APIGEE_HYBRID_INSTALLER_GITHUB: "https://github.com/carlosfrias/{{ APIGEE_HYBRID_WORKBENCH_NAME }}.git"

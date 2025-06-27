@@ -1,6 +1,7 @@
 #bash
+mkdir -p $HOME/.apigee-secure:/root/.apigee-secure
 
-#docker run -v $HOME/.apigee-secure:/root/.apigee-secure:ro \
+#docker run -v $HOME/.apigee-secure:/root/.apigee-secure:rw \
 #   -v $(pwd)/resources:/apigee-workspace/apigee-helm/resources:ro \
 #   -v $(pwd)/molecule:/apigee-workspace/apigee-helm/molecule:rw \
 #   -v $(pwd)/work_dir:/apigee-workspace/apigee-helm/work_dir:rw \
@@ -8,9 +9,8 @@
 #   -ti \
 #   {{ artifact_image_name }}:{{ tag }} bash
 
-
-docker run -v $HOME/.apigee-secure:/root/.apigee-secure:ro \
+docker run -v $HOME/.apigee-secure:/root/.apigee-secure:rw \
    -v $(pwd):/apigee-workspace/apigee-helm:rw \
    -v $HOME/.config:/root/.config/gcloud:rw \
    -ti \
-   {{ artifact_image_name }}:{{ tag }} bash
+   {{ gcr_io_image_name }} bash

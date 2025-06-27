@@ -18,7 +18,7 @@ service of a customer question.
 
 [//]: # ()
 [//]: # ()
-[//]: # ([Open in Cloud Shell Using Image]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-workspace&#41;)
+[//]: # ([Open in Cloud Shell Using Image]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-workspace:v1.0&#41;)
 
 [//]: # ()
 [//]: # (    [![Open in Cloud Shell]&#40;https://gstatic.com/cloudssh/images/open-btn.svg&#41;]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&cloudshell_tutorial=tutorial.md&#41;)

@@ -33,5 +33,5 @@
 
     - name: Push container to gcr.io repository
       shell: |
-        docker push {{ gcr_io_image_name }}:{{ tag }}
+        docker push {{ gcr_io_image_name }}
 
