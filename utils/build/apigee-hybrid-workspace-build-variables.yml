@@ -47,7 +47,7 @@ templates:
 - { src: "{{ SOURCE_DIR }}/utils/bootstrap/README-template.md", dest: "{{ SOURCE_DIR }}/README.md" }
 
 container_volumes:
-- "{{ ansible_user_dir }}/.apigee-secure:/root/apigee-secure:ro"
+- "{{ ansible_user_dir }}/.apigee-secure:/root/apigee-secure:rw"
 - "{{ ansible_user_dir }}/.config:/root/.config/gcloud:ro"
 - "{{ SOURCE_DIR }}/resources:/apigee-workspace/apigee-helm/resources:ro"
 - "{{ SOURCE_DIR }}/molecule:/apigee-workspace/apigee-helm/molecule:rw"

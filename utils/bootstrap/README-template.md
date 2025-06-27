@@ -30,4 +30,5 @@ service of a customer question.
 
 1. Clone the repository `git clone git@github.com:carlosfrias/apigee-hybrid-deployment.git`
 2. Start the apigee-workspace:  `./start-container.sh`
-3. Update credentials 
+3. Update credentials `ansible-playbook utils/bootstrap/configure-credentials.yml`
+4. Project naming conventions will be 'api-{{hybrid version}}-'
