@@ -4,5 +4,4 @@ test_*
 *.log
 work_dir/
 molecule/
-start-container.sh
 .ansible/
