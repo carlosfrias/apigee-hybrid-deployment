@@ -1,29 +1,68 @@
-# Apigee hybrid Deployment Workspace
+# apigee-hybrid-deployment — Apigee Hybrid Deployment Workspace
 
-This is a portable workspace from which to deploy an Apigee hybrid instance. 
-This workspace can be used to deploy a prescribed working hybrid instance or 
-to work with portions of the installation so that different configurations can 
-be either tested or explored. This is particularly useful when either a new 
-Apigee hybrid version is released or in alignment with a customer situation in the 
-service of a customer question. 
+> **A portable workspace for deploying Apigee Hybrid (K8s) instances** — Ansible playbooks, Helm chart overrides, service account management, mTLS cert processing, and multi-region configuration for GKE/EKS. The deployment-tier companion to the [`apigee-hybrid-workspace`](https://github.com/carlosfrias/apigee-hybrid-workspace) automation collection.
 
-# Apigee hybrid Deployment Workspace Quickstart
+> [!NOTE]
+> Engineering portfolio note — this project demonstrates Apigee Hybrid deployment configuration and multi-region K8s lifecycle management. See the [skills assessment →](SKILLS-ASSESSMENT.md) for the expertise applied.
 
-[//]: # (This workspace can be deployed in a local docker container or using CloudShell. )
+This is the deployment workspace — where the `apigee-hybrid-workspace` collection is applied to real GKE/EKS clusters. It provides the `hybrid-common-attributes.yml` (the centralized variable file), multi-region configs (`region-dc-1`, `region-dc-2`), and utility playbooks for Cassandra access, mTLS cert processing, and troubleshooting.
 
-[//]: # (## Open Using Cloud Shell - &#40;UNDER CONSTRUCTION&#41;)
+<!-- BEGIN Google Required Disclaimer -->
 
-[//]: # ()
-[//]: # ([Open in Cloud Shell Using Dockerfile]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&#41;)
+## Not Google Product Clause
 
-[//]: # ()
-[//]: # ()
-[//]: # ([Open in Cloud Shell Using Image]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_image=gcr.io/friasc-apigee-lab/apigee-workspace:v1.0&#41;)
+This is not an officially supported Google product.
+<!-- END Google Required Disclaimer -->
 
-[//]: # ()
-[//]: # (    [![Open in Cloud Shell]&#40;https://gstatic.com/cloudssh/images/open-btn.svg&#41;]&#40;https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/carlosfrias/apigee-hybrid-deployment.git&cloudshell_tutorial=tutorial.md&#41;)
+---
 
-[//]: # ()
+## What the workspace provides
 
-## Quickstart Configuration
+- **`hybrid-common-attributes.yml`** — the centralized variable file for Apigee Hybrid deployment: project IDs, service accounts, work directories, Helm chart paths, cert paths, APIGEE version, cluster channels.
+- **Multi-region configuration** — `hybrid-region-dc-1.yml` and `hybrid-region-dc-2.yml` (+ `-prep`) for dual-datacenter deployments.
+- **`credentials.yml.template`** — credential template for service account management.
+- **`hybrid-org-host-metadata.yml`** — org/host metadata for virtual host configuration.
+- **mTLS cert processing** — `mTLS-certs.yml` and `mTLS-certs-process-cert-attribute-material.yml`.
+- **Cassandra client access** — container manifest, template, and creation playbooks for Cassandra client access in Hybrid.
+- **Gather-all and troubleshooting** — `hybrid-gather-all-script.yml` (comprehensive diagnostic collection), `troubleshooting-node.yml`, `apigee-operator-troubleshooting.yml`.
+- **AWS EKS support** — `aws-cluster/` with EKS provisioning playbooks.
+- **Dockerfile** — containerized Ansible controller for reproducible deployments.
 
+---
+
+## Architecture
+
+```
+resources/
+├── hybrid-common-attributes.yml      ← centralized variables
+├── hybrid-region-dc-1.yml            ← single-region config
+├── hybrid-region-dc-2.yml            ← second DC config
+├── hybrid-region-dc-2-prep.yml       ← second DC prep
+├── hybrid-org-host-metadata.yml      ← org/host metadata
+├── credentials.yml.template          ← service account template
+└── requirements.txt
+
+utils/
+├── mTLS-certs.yml                    ← cert processing
+├── mTLS-certs-process-cert-attribute-material.yml
+├── cassandra-client-container-*.yml  ← Cassandra client access
+├── hybrid-gather-all-script.yml      ← diagnostic collection
+├── apigee-operator-troubleshooting.yml
+├── kubernetes-info.yml
+├── aws-cluster/                      ← EKS provisioning
+├── bootstrap/                        ← workspace bootstrap
+└── build/                            ← build utilities
+
+Dockerfile                            ← containerized controller
+hybrid-eks-manifest.yml               ← EKS manifest
+```
+
+---
+
+## Provenance
+
+Authored and maintained by **Carlos Frias** during his tenure on Apigee. The deployment-tier companion to the [`apigee-hybrid-workspace`](https://github.com/carlosfrias/apigee-hybrid-workspace) automation collection.
+
+## License
+
+See [LICENSE](./LICENSE).
